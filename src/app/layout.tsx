@@ -4,7 +4,7 @@ import { Inter, Space_Mono } from "next/font/google";
 
 import SessionWrapper from "@/components/SessionWrapper";
 
-import "@/styles/globals.css";
+import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
