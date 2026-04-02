@@ -3,7 +3,7 @@ import pkg from "pg";
 const { Pool } = pkg;
 
 const pool = new Pool({
-  connectionString: process.env.NEON_DB_URL,
+  connectionString: process.env.DATABASE_URL,
 });
 
 export default pool;
