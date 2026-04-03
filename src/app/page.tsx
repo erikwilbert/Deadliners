@@ -7,11 +7,10 @@ import EditProfileModal from "@/components/EditProfileModal";
 import MemberCard from "@/components/MemberCard";
 import Navbar from "@/components/Navbar";
 import useUsers from "@/hooks/useUsers";
-import type { UserUpdate } from "@/types/user";
 
 export default function Home() {
   const { data: session } = useSession();
-  const { users, loading, editUser } = useUsers();
+  const { users, loading } = useUsers();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const currentUser = session?.user?.id
     ? users.find((user) => user.id === session.user.id) || null

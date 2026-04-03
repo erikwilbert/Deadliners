@@ -1,4 +1,9 @@
 export type UserAccent = 'indigo' | 'cyan' | 'emerald';
+export type SocialPlatform = "instagram" | "github" | "linkedin" | "x";
+export type SocialLink = {
+  platform: SocialPlatform;
+  url: string;
+};
 
 export type User = {
   id: string;
@@ -34,5 +39,6 @@ export type UserUpdate = {
   status_relationship: string;
   prodi: string;
   accent: UserAccent;
+  url_social: string[];
   npm: string;
 };
