@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 
 const COURSE_URL = "https://scele.cs.ui.ac.id/course/view.php?id=4140";
-const OPENED_LABEL = "Fri, 13 Mar 2026 · 00:00 WIB";
-const DUE_LABEL = "Fri, 03 Apr 2026 · 23:59 WIB";
+const OPENED_LABEL = "Fri, 13 Mar 2026 | 00:00 WIB";
+const DUE_LABEL = "Fri, 03 Apr 2026 | 23:59 WIB";
 
 type ConnectionState = "checking" | "connected" | "disconnected";
 
@@ -23,11 +23,11 @@ function formatJakartaTime(value: Date) {
   const get = (type: string) =>
     parts.find((part) => part.type === type)?.value ?? "";
 
-  return `${get("weekday")}, ${get("day")} ${get("month")} · ${get("hour")}:${get("minute")}:${get("second")} WIB`;
+  return `${get("weekday")}, ${get("day")} ${get("month")} | ${get("hour")}:${get("minute")}:${get("second")} WIB`;
 }
 
 export default function CourseStatusPanel() {
-  const [now, setNow] = useState(() => formatJakartaTime(new Date()));
+  const [now, setNow] = useState<string | null>(null);
   const [status, setStatus] = useState<ConnectionState>("checking");
 
   useEffect(() => {
@@ -127,7 +127,7 @@ export default function CourseStatusPanel() {
           <span className="material-symbols-outlined text-sm">open_in_new</span>
         </div>
 
-        <div className="space-y-2 text-[11px] font-label">
+        <div className="space-y-2 font-label text-[11px]">
           <div className="grid grid-cols-[56px_1fr] gap-3">
             <span className="text-zinc-500">TASK</span>
             <span className="text-white">Tugas Kelompok 2</span>
@@ -142,7 +142,7 @@ export default function CourseStatusPanel() {
           </div>
           <div className="grid grid-cols-[56px_1fr] gap-3">
             <span className="text-zinc-500">TIME</span>
-            <span className="text-white">{now}</span>
+            <span className="text-white">{now ?? "Syncing WIB clock..."}</span>
           </div>
           <div className="grid grid-cols-[56px_1fr] gap-3">
             <span className="text-zinc-500">LOG</span>

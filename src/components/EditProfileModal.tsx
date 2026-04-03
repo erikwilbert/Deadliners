@@ -20,6 +20,26 @@ const accentOptions: { value: UserAccent; label: string }[] = [
   { value: "white", label: "White" },
 ];
 
+function getActiveStepClasses(accent: UserAccent) {
+  if (accent === "white") {
+    return "border-white/20 bg-white/[0.08] text-white backdrop-blur-xl";
+  }
+
+  return "border-user-accent/40 bg-user-accent/10 text-user-accent";
+}
+
+function getPrimaryActionClasses(accent: UserAccent) {
+  if (accent === "white") {
+    return "border border-white/20 bg-white/85 text-zinc-950 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_18px_40px_-30px_rgba(255,255,255,0.55)] hover:bg-white/75";
+  }
+
+  if (accent === "gold") {
+    return "border border-user-accent/40 bg-user-accent text-zinc-950 shadow-[0_16px_40px_-28px_rgb(var(--color-user-accent)/0.9)] hover:bg-user-accent/90";
+  }
+
+  return "bg-user-accent text-white shadow-[0_16px_40px_-28px_rgb(var(--color-user-accent)/0.9)] hover:bg-user-accent/90";
+}
+
 function formatDateForInput(dateStr?: string | null): string {
   if (!dateStr) return "";
   try {
@@ -696,7 +716,7 @@ function EditProfileDialog({
                 <div
                   className={`font-label flex items-center gap-2 border px-3 py-2 text-[10px] tracking-[0.2em] uppercase ${
                     step === 1
-                      ? "border-user-accent/40 bg-user-accent/10 text-user-accent"
+                      ? getActiveStepClasses(form.accent)
                       : "border-white/10 text-zinc-500"
                   }`}
                 >
@@ -709,7 +729,7 @@ function EditProfileDialog({
                 <div
                   className={`font-label flex items-center gap-2 border px-3 py-2 text-[10px] tracking-[0.2em] uppercase ${
                     step === 2
-                      ? "border-user-accent/40 bg-user-accent/10 text-user-accent"
+                      ? getActiveStepClasses(form.accent)
                       : "border-white/10 text-zinc-500"
                   }`}
                 >
@@ -722,7 +742,7 @@ function EditProfileDialog({
                 <div
                   className={`font-label flex items-center gap-2 border px-3 py-2 text-[10px] tracking-[0.2em] uppercase ${
                     step === 3
-                      ? "border-user-accent/40 bg-user-accent/10 text-user-accent"
+                      ? getActiveStepClasses(form.accent)
                       : "border-white/10 text-zinc-500"
                   }`}
                 >
@@ -813,7 +833,7 @@ function EditProfileDialog({
                     setValidationError(null);
                     setStep(3);
                   }}
-                  className="flex min-w-32 items-center justify-center gap-2 bg-user-accent px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-user-accent/90"
+                  className={`flex min-w-32 items-center justify-center gap-2 px-5 py-3 text-sm font-bold transition-colors ${getPrimaryActionClasses(form.accent)}`}
                 >
                   Next
                   <span className="material-symbols-outlined text-base">
@@ -824,7 +844,7 @@ function EditProfileDialog({
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex items-center justify-center gap-2 bg-user-accent px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-user-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
+                  className={`flex items-center justify-center gap-2 px-5 py-3 text-sm font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${getPrimaryActionClasses(form.accent)}`}
                 >
                   {saving ? (
                     <>
