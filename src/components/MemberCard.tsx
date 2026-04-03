@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 
-import type { Member } from "@/data/members";
-import { User } from "@/types/user";
+import type { User } from "@/types/user";
 
 const accentMap = {
   indigo: {

@@ -1,12 +1,64 @@
-"use client"
+"use client";
 
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+
+import EditProfileModal from "@/components/EditProfileModal";
 import MemberCard from "@/components/MemberCard";
 import Navbar from "@/components/Navbar";
 import ThemeCustomizer from "@/components/ThemeCustomizer";
 import useUsers from "@/hooks/useUsers";
+import type { UserUpdate } from "@/types/user";
 
 export default function Home() {
-  const { users, loading } = useUsers();
+  const { data: session } = useSession();
+  const { users, loading, editUser } = useUsers();
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const currentUser = session?.user?.id
+    ? users.find((user) => user.id === session.user.id) || null
+    : session?.user?.email
+      ? users.find((user) => user.gmail === session.user.email) || null
+      : null;
+
+  const handleOpenEditModal = () => {
+    if (!session) {
+      return;
+    }
+
+    setProfileError(null);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    if (isSavingProfile) {
+      return;
+    }
+
+    setProfileError(null);
+    setIsEditModalOpen(false);
+  };
+
+  const handleSaveProfile = async (data: UserUpdate) => {
+    if (!currentUser) {
+      return;
+    }
+
+    setIsSavingProfile(true);
+    setProfileError(null);
+
+    try {
+      await editUser(currentUser.id, data);
+      setIsEditModalOpen(false);
+    } catch (error) {
+      setProfileError(
+        error instanceof Error ? error.message : "Failed to update profile.",
+      );
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
 
   return (
     <>
@@ -15,7 +67,11 @@ export default function Home() {
         <div className="absolute right-[-10%] bottom-[-10%] h-[40%] w-[40%] rounded-full bg-neon-cyan/10 blur-[120px]" />
       </div>
 
-      <Navbar />
+      <Navbar
+        currentUser={currentUser}
+        onEditProfile={handleOpenEditModal}
+        isEditDisabled={!currentUser || loading}
+      />
 
       <main className="relative mx-auto max-w-screen-xl px-6 pt-32 pb-24">
         <section className="relative mb-12 flex flex-col items-center text-center">
@@ -37,9 +93,15 @@ export default function Home() {
           id="members"
           className="relative grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
-          {users.map((user) => (
-            <MemberCard key={user.id} user={user} />
-          ))}
+          {users.length === 0 && loading ? (
+            <div className="glass-card col-span-full border-white/10 px-6 py-8 text-center">
+              <span className="font-label text-[10px] tracking-[0.3em] text-zinc-500 uppercase">
+                Syncing user directory...
+              </span>
+            </div>
+          ) : (
+            users.map((user) => <MemberCard key={user.id} user={user} />)
+          )}
         </section>
       </main>
 
@@ -82,6 +144,15 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      <EditProfileModal
+        open={isEditModalOpen}
+        user={currentUser}
+        saving={isSavingProfile}
+        error={profileError}
+        onClose={handleCloseEditModal}
+        onSubmit={handleSaveProfile}
+      />
     </>
   );
 }
