@@ -28,13 +28,9 @@ export const authOptions: NextAuthOptions = {
           if (res.rows.length === 0) {
             await pool.query(
               `INSERT INTO "user" (
-                gmail, fname, lname, uname, img_url,
-                birth_date, birth_location, gender, status_relationship,
-                bio, phone, address, prodi, accent, npm
+                gmail, fname, lname, uname, img_ur
               ) VALUES (
-                $1, $2, $3, $4, $5,
-                '2000-01-01', '-', '-', '-',
-                '-', '-', '-', '-', '-', '-'
+                $1, $2, $3, $4, $5
               )`,
               [email, fname, lname, uname, image]
             );
