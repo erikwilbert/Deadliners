@@ -29,6 +29,9 @@ export type UserUpdate = {
   phone: string;
   address: string;
   birth_location: string;
+  birth_date: string;
+  gender: string;
+  status_relationship: string;
   prodi: string;
   accent: UserAccent;
 };

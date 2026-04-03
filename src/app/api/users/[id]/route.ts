@@ -44,6 +44,12 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
   const address = typeof body.address === "string" ? body.address.trim() : "";
   const birthLocation =
     typeof body.birth_location === "string" ? body.birth_location.trim() : "";
+  const birthDate =
+    typeof body.birth_date === "string" ? body.birth_date.trim() : "";
+  const gender =
+    typeof body.gender === "string" ? body.gender.trim() : "";
+  const statusRelationship =
+    typeof body.status_relationship === "string" ? body.status_relationship.trim() : "";
   const prodi = typeof body.prodi === "string" ? body.prodi.trim() : "";
   const accent = typeof body.accent === "string" ? body.accent : "";
 
@@ -68,8 +74,8 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
     const result = await pool.query(
       `UPDATE "user"
        SET uname=$1, fname=$2, lname=$3, bio=$4, phone=$5,
-           address=$6, birth_location=$7, prodi=$8, accent=$9
-       WHERE id=$10
+           address=$6, birth_location=$7, birth_date=$8, gender=$9, status_relationship=$10, prodi=$11, accent=$12
+       WHERE id=$13
        RETURNING *`,
       [
         uname,
@@ -79,6 +85,9 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
         phone,
         address,
         birthLocation,
+        birthDate,
+        gender,
+        statusRelationship,
         prodi,
         accent,
         id,
