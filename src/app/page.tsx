@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 
+import CourseStatusPanel from "@/components/CourseStatusPanel";
 import EditProfileModal from "@/components/EditProfileModal";
 import MemberCard from "@/components/MemberCard";
 import Navbar from "@/components/Navbar";
@@ -75,22 +76,7 @@ export default function Home() {
         </section>
       </main>
 
-      <div className="pointer-events-none fixed top-24 left-6 hidden xl:block">
-        <div className="glass-card space-y-1 border-accent/20 bg-black/40 px-4 py-2 text-[9px] font-label">
-          <div className="flex gap-4">
-            <span className="text-zinc-500">CPU</span>
-            <span className="text-white">12.4%</span>
-          </div>
-          <div className="flex gap-4">
-            <span className="text-zinc-500">MEM</span>
-            <span className="text-white">1.2GB</span>
-          </div>
-          <div className="flex gap-4">
-            <span className="text-zinc-500">LOG</span>
-            <span className="text-neon-emerald">CONNECTED</span>
-          </div>
-        </div>
-      </div>
+      <CourseStatusPanel />
 
       <footer className="w-full border-t border-white/5 bg-black py-12">
         <div className="font-label flex flex-col items-center justify-center space-y-4 text-[10px] tracking-widest uppercase">
