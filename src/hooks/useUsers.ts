@@ -2,12 +2,24 @@
 
 import { useEffect, useState } from "react";
 
-import { getUsers, updateUser } from "@/services/userServices";
+import { getUsers, updateUser, getUserById } from "@/services/userServices";
 import type { User, UserUpdate } from "@/types/user";
 
 export default function useUsers() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const fetchUserById = async (id: string) => {
+    setLoading(true);
+    try {
+      const data = await getUserById(id);
+      setUsers([data]);
+    } catch (err) {
+      console.error("Fetch user error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchUsers = async () => {
     setLoading(true);

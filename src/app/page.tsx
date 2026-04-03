@@ -14,8 +14,6 @@ export default function Home() {
   const { data: session } = useSession();
   const { users, loading, editUser } = useUsers();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isSavingProfile, setIsSavingProfile] = useState(false);
-  const [profileError, setProfileError] = useState<string | null>(null);
   const currentUser = session?.user?.id
     ? users.find((user) => user.id === session.user.id) || null
     : session?.user?.email
@@ -27,37 +25,11 @@ export default function Home() {
       return;
     }
 
-    setProfileError(null);
     setIsEditModalOpen(true);
   };
 
   const handleCloseEditModal = () => {
-    if (isSavingProfile) {
-      return;
-    }
-
-    setProfileError(null);
     setIsEditModalOpen(false);
-  };
-
-  const handleSaveProfile = async (data: UserUpdate) => {
-    if (!currentUser) {
-      return;
-    }
-
-    setIsSavingProfile(true);
-    setProfileError(null);
-
-    try {
-      await editUser(currentUser.id, data);
-      setIsEditModalOpen(false);
-    } catch (error) {
-      setProfileError(
-        error instanceof Error ? error.message : "Failed to update profile.",
-      );
-    } finally {
-      setIsSavingProfile(false);
-    }
   };
 
   return (
@@ -148,10 +120,7 @@ export default function Home() {
       <EditProfileModal
         open={isEditModalOpen}
         user={currentUser}
-        saving={isSavingProfile}
-        error={profileError}
         onClose={handleCloseEditModal}
-        onSubmit={handleSaveProfile}
       />
     </>
   );

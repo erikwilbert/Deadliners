@@ -5,6 +5,7 @@ import pool from "./neon";
 
 // Auth Configuration
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET || "my-super-secret-development-key-123456789",
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",

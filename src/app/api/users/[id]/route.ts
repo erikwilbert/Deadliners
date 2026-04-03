@@ -103,14 +103,15 @@ export async function DELETE(
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   try {
+    const { id } = await params;
     await pool.query(
       `DELETE FROM "user"
        WHERE id=$1`,
-      [params.id]
+      [id]
     );
 
     return NextResponse.json({ message: "User deleted" });

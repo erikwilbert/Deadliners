@@ -1,4 +1,4 @@
-export type UserAccent = "indigo" | "cyan" | "emerald";
+export type UserAccent = 'indigo' | 'cyan' | 'emerald';
 
 export type User = {
   id: string;
