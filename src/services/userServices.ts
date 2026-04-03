@@ -16,18 +16,6 @@ export const getUserById = async (id: string): Promise<User> => {
   return res.json();
 };
 
-// CREATE
-export const createUser = async (data: User) => {
-  const res = await fetch("/api/users", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-
-  if (!res.ok) throw new Error("Failed to create user");
-  return res.json();
-};
-
 // UPDATE
 export const updateUser = async (id: string, data: UserUpdate) => {
   const res = await fetch(`/api/users/${id}`, {

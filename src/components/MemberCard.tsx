@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import type { Member } from "@/data/members";
+import { User } from "@/types/user";
 
 const accentMap = {
   indigo: {
@@ -35,8 +36,8 @@ const accentMap = {
   },
 } as const;
 
-export default function MemberCard({ member }: { member: Member }) {
-  const a = accentMap[member.accent];
+export default function UserCard({ user }: { user: User }) {
+  const a = accentMap[user.accent as keyof typeof accentMap] || accentMap.indigo;
 
   return (
     <div className={`glass-card group flex h-full flex-col p-8 ${a.cardHover}`}>
@@ -47,8 +48,8 @@ export default function MemberCard({ member }: { member: Member }) {
           className={`h-20 w-20 overflow-hidden border border-white/10 bg-zinc-900 grayscale transition-all group-hover:grayscale-0 ${a.imgHover}`}
         >
           <Image
-            src={member.avatar}
-            alt={member.name}
+            src={user.img_url}
+            alt={user.fname + " " + user.lname}
             width={80}
             height={80}
             className="h-full w-full object-cover"
@@ -61,7 +62,7 @@ export default function MemberCard({ member }: { member: Member }) {
             <span
               className={`font-label text-sm text-white transition-colors ${a.npmHover}`}
             >
-              {member.npm}
+              {user.npm}
             </span>
           </div>
           <div className="flex flex-col items-end">
@@ -71,7 +72,7 @@ export default function MemberCard({ member }: { member: Member }) {
             <span
               className={`font-label text-[10px] font-bold uppercase ${a.deptColor}`}
             >
-              {member.department}
+              {user.prodi}
             </span>
           </div>
         </div>
@@ -79,19 +80,19 @@ export default function MemberCard({ member }: { member: Member }) {
 
       <div className="mb-6">
         <h3 className="mb-1 text-2xl font-bold transition-transform group-hover:translate-x-1">
-          {member.name}
+          {user.fname + " " + user.lname}
         </h3>
-        <p className="font-label text-xs text-zinc-500">{member.username}</p>
+        <p className="font-label text-xs text-zinc-500">{user.uname}</p>
       </div>
 
       <p className="text-on-surface-variant mb-8 line-clamp-3 text-sm">
-        {member.bio}
+        {user.bio}
       </p>
 
       <div className="mt-auto space-y-4 border-t border-white/5 pt-6">
         <div className="font-label flex justify-between text-[11px]">
           <span className="text-zinc-600">ORIGIN</span>
-          <span className="text-white">{member.origin}</span>
+          <span className="text-white">{user.birth_location}</span>
         </div>
         <div className="flex gap-2 pt-4">
           <a
@@ -99,7 +100,7 @@ export default function MemberCard({ member }: { member: Member }) {
             className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
           >
             <span className="material-symbols-outlined text-sm">
-              {member.icons[0]}
+              {user.url_social?.[0] || ""}
             </span>
           </a>
           <a
@@ -107,7 +108,7 @@ export default function MemberCard({ member }: { member: Member }) {
             className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
           >
             <span className="material-symbols-outlined text-sm">
-              {member.icons[1]}
+              {user.url_social?.[1] || ""}
             </span>
           </a>
         </div>
