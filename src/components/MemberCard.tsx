@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
+
+import SocialPlatformIcon from "./SocialPlatformIcon";
 import ViewProfileModal from "./ViewProfileModal";
 
 import {
@@ -14,7 +16,7 @@ import type { User } from "@/types/user";
 const accentMap = {
   indigo: {
     cardHover:
-      "hover:border-accent/40 hover:shadow-[0_10px_40px_-10px_rgba(99,102,241,0.2)]",
+      "hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_10px_40px_-10px_rgba(99,102,241,0.2)]",
     imgHover: "group-hover:border-accent/60",
     npmHover: "group-hover:text-accent",
     deptColor: "text-accent",
@@ -23,7 +25,7 @@ const accentMap = {
   },
   cyan: {
     cardHover:
-      "hover:border-neon-cyan/40 hover:shadow-[0_10px_40px_-10px_rgba(6,182,212,0.2)]",
+      "hover:-translate-y-1 hover:border-neon-cyan/40 hover:shadow-[0_10px_40px_-10px_rgba(6,182,212,0.2)]",
     imgHover: "group-hover:border-neon-cyan/60",
     npmHover: "group-hover:text-neon-cyan",
     deptColor: "text-neon-cyan",
@@ -32,7 +34,7 @@ const accentMap = {
   },
   emerald: {
     cardHover:
-      "hover:border-neon-emerald/40 hover:shadow-[0_10px_40px_-10px_rgba(16,185,129,0.2)]",
+      "hover:-translate-y-1 hover:border-neon-emerald/40 hover:shadow-[0_10px_40px_-10px_rgba(16,185,129,0.2)]",
     imgHover: "group-hover:border-neon-emerald/60",
     npmHover: "group-hover:text-neon-emerald",
     deptColor: "text-neon-emerald",
@@ -123,9 +125,7 @@ export default function UserCard({ user }: { user: User }) {
                 onClick={(e) => e.stopPropagation()}
                 className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
               >
-                <span className="material-symbols-outlined text-sm">
-                  {platform.icon}
-                </span>
+                <SocialPlatformIcon platform={link.platform} className="h-3.5 w-3.5" />
               </a>
             );
           })}

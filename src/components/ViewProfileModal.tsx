@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
+
+import SocialPlatformIcon from "./SocialPlatformIcon";
 import {
   getSocialPlatformMeta,
   normalizeSocialHref,
   parseSocialLinks,
 } from "@/lib/social";
-import type { User, UserAccent } from "@/types/user";
+import type { User } from "@/types/user";
 
 const accentMap = {
   indigo: {
@@ -199,9 +201,7 @@ export default function ViewProfileModal({
                           title={platform.label}
                           className="flex items-center gap-2 border border-white/10 bg-black/30 px-4 py-3 text-sm text-white transition-colors hover:border-white/30"
                         >
-                          <span className={`material-symbols-outlined text-lg ${a.text}`}>
-                            {platform.icon}
-                          </span>
+                          <SocialPlatformIcon platform={link.platform} className={a.text} />
                           <span className="hidden sm:inline-block truncate max-w-[150px]">
                             {link.url}
                           </span>
