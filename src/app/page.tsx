@@ -95,13 +95,13 @@ export default function Home() {
       <footer className="mt-auto w-full shrink-0 border-t border-white/5 bg-black py-12">
         <div className="font-label flex flex-col items-center justify-center space-y-4 text-[10px] tracking-widest uppercase">
           <div className="flex gap-8 text-zinc-600">
-            <a href="#https://docs.google.com/document/d/1jtNDOej4NvrQM-chcWyI54OIbOJ5eAgXu9vMqqFzelA/edit?tab=t.0" className="transition-colors hover:text-accent">
+            <a href="https://docs.google.com/document/d/1jtNDOej4NvrQM-chcWyI54OIbOJ5eAgXu9vMqqFzelA/edit?tab=t.0" className="transition-colors hover:text-accent">
               Documentation
             </a>
-            <a href="#https://github.com/erikwilbert/Deadliners" className="transition-colors hover:text-neon-cyan">
+            <a href="https://github.com/erikwilbert/Deadliners" className="transition-colors hover:text-neon-cyan">
               Repository
             </a>
-            <a href="#https://wa.me/085849118204?text=Halo%20Puh%20%0A%0AInfokan%20Puh%20Bantuin%20Dong" className="transition-colors hover:text-neon-emerald">
+            <a href="https://wa.me/085849118204?text=Halo%20Puh%20%0A%0AInfokan%20Puh%20Bantuin%20Dong" className="transition-colors hover:text-neon-emerald">
               Contact
             </a>
           </div>
