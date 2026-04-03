@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import EditProfileModal from "@/components/EditProfileModal";
 import MemberCard from "@/components/MemberCard";
 import Navbar from "@/components/Navbar";
-import ThemeCustomizer from "@/components/ThemeCustomizer";
 import useUsers from "@/hooks/useUsers";
 import type { UserUpdate } from "@/types/user";
 
@@ -93,8 +92,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      <ThemeCustomizer />
 
       <footer className="w-full border-t border-white/5 bg-black py-12">
         <div className="font-label flex flex-col items-center justify-center space-y-4 text-[10px] tracking-widest uppercase">
