@@ -32,7 +32,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <div className="pointer-events-none fixed inset-0 z-[-1] overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] h-[40%] w-[40%] rounded-full bg-accent/10 blur-[120px]" />
         <div className="absolute right-[-10%] bottom-[-10%] h-[40%] w-[40%] rounded-full bg-neon-cyan/10 blur-[120px]" />
@@ -44,7 +44,7 @@ export default function Home() {
         isEditDisabled={!currentUser || loading}
       />
 
-      <main className="relative mx-auto max-w-screen-xl px-6 pt-32 pb-24">
+      <main className="relative mx-auto flex-1 w-full max-w-screen-xl px-6 pt-32 pb-24">
         <section className="relative mb-12 flex flex-col items-center text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 backdrop-blur-md">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
@@ -78,22 +78,22 @@ export default function Home() {
 
       <CourseStatusPanel />
 
-      <footer className="w-full border-t border-white/5 bg-black py-12">
+      <footer className="mt-auto w-full shrink-0 border-t border-white/5 bg-black py-12">
         <div className="font-label flex flex-col items-center justify-center space-y-4 text-[10px] tracking-widest uppercase">
           <div className="flex gap-8 text-zinc-600">
-            <a href="#" className="transition-colors hover:text-accent">
+            <a href="#https://docs.google.com/document/d/1jtNDOej4NvrQM-chcWyI54OIbOJ5eAgXu9vMqqFzelA/edit?tab=t.0" className="transition-colors hover:text-accent">
               Documentation
             </a>
-            <a href="#" className="transition-colors hover:text-neon-cyan">
+            <a href="#https://github.com/erikwilbert/Deadliners" className="transition-colors hover:text-neon-cyan">
               Repository
             </a>
-            <a href="#" className="transition-colors hover:text-neon-emerald">
-              Privacy
+            <a href="#https://wa.me/085849118204?text=Halo%20Puh%20%0A%0AInfokan%20Puh%20Bantuin%20Dong" className="transition-colors hover:text-neon-emerald">
+              Contact
             </a>
           </div>
           <p className="text-zinc-500">
-            &copy; 2025{" "}
-            <span className="text-zinc-400">DEADLINERS COLLECTIVE</span>. PKPL
+            &copy; 2026{" "}
+            <span className="text-zinc-400">DEADLINERS</span>. PKPL
             2025/2026.
           </p>
         </div>
@@ -104,6 +104,6 @@ export default function Home() {
         user={currentUser}
         onClose={handleCloseEditModal}
       />
-    </>
+    </div>
   );
 }

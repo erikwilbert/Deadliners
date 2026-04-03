@@ -20,6 +20,17 @@ const accentOptions: { value: UserAccent; label: string }[] = [
   { value: "white", label: "White" },
 ];
 
+function formatDateForInput(dateStr?: string | null): string {
+  if (!dateStr) return "";
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.valueOf())) return "";
+    return d.toISOString().split("T")[0];
+  } catch {
+    return "";
+  }
+}
+
 function toEditableProfile(user: User): UserUpdate {
   return {
     uname: user.uname ?? "",
@@ -29,7 +40,7 @@ function toEditableProfile(user: User): UserUpdate {
     phone: user.phone ?? "",
     address: user.address ?? "",
     birth_location: user.birth_location ?? "",
-    birth_date: user.birth_date ?? "",
+    birth_date: formatDateForInput(user.birth_date),
     gender: user.gender ?? "",
     status_relationship: user.status_relationship ?? "",
     prodi: user.prodi ?? "",
