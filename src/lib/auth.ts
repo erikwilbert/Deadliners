@@ -23,11 +23,19 @@ export const authOptions: NextAuthOptions = {
         const uname = email.split("@")[0] || "";
 
         try {
-          const res = await pool.query("SELECT * FROM users WHERE gmail = $1", [email]);
+          const res = await pool.query('SELECT * FROM "user" WHERE gmail = $1', [email]);
           
           if (res.rows.length === 0) {
             await pool.query(
-              `INSERT INTO users (gmail, fname, lname, uname, img_url) VALUES ($1, $2, $3, $4, $5)`,
+              `INSERT INTO "user" (
+                gmail, fname, lname, uname, img_url,
+                birth_date, birth_location, gender, status_relationship,
+                bio, phone, address, prodi, accent, npm
+              ) VALUES (
+                $1, $2, $3, $4, $5,
+                '2000-01-01', '-', '-', '-',
+                '-', '-', '-', '-', '-', '-'
+              )`,
               [email, fname, lname, uname, image]
             );
           }
@@ -50,7 +58,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user && token.email) {
         try {
-          const res = await pool.query("SELECT * FROM users WHERE gmail = $1", [token.email]);
+          const res = await pool.query('SELECT * FROM "user" WHERE gmail = $1', [token.email]);
           if (res.rows.length > 0) {
             const dbUser = res.rows[0];
             Object.assign(session.user, dbUser);
