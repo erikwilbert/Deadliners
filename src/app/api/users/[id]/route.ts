@@ -57,3 +57,27 @@ export async function PUT(
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 }
+
+// DELETE user
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
+  }
+
+  try {
+    await pool.query(
+      `DELETE FROM "user"
+       WHERE id=$1`,
+      [params.id]
+    );
+
+    return NextResponse.json({ message: "User deleted" });
+  } catch (err) {
+    return NextResponse.json({ error: "Delete failed" }, { status: 500 });
+  }
+}

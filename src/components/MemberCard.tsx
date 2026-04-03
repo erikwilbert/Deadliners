@@ -37,7 +37,8 @@ const accentMap = {
 } as const;
 
 export default function UserCard({ user }: { user: User }) {
-  const a = accentMap[user.accent as keyof typeof accentMap] || accentMap.indigo;
+  const accentKey = user.accent?.toLowerCase().trim() as keyof typeof accentMap;
+  const a = accentMap[accentKey];
 
   return (
     <div className={`glass-card group flex h-full flex-col p-8 ${a.cardHover}`}>
@@ -49,7 +50,7 @@ export default function UserCard({ user }: { user: User }) {
         >
           <Image
             src={user.img_url}
-            alt={user.fname + " " + user.lname}
+            alt={user.fname}
             width={80}
             height={80}
             className="h-full w-full object-cover"
@@ -62,7 +63,7 @@ export default function UserCard({ user }: { user: User }) {
             <span
               className={`font-label text-sm text-white transition-colors ${a.npmHover}`}
             >
-              {user.npm}
+              {user.npm || "-"}
             </span>
           </div>
           <div className="flex flex-col items-end">
@@ -72,7 +73,7 @@ export default function UserCard({ user }: { user: User }) {
             <span
               className={`font-label text-[10px] font-bold uppercase ${a.deptColor}`}
             >
-              {user.prodi}
+              {user.prodi || "-"}
             </span>
           </div>
         </div>
@@ -80,37 +81,43 @@ export default function UserCard({ user }: { user: User }) {
 
       <div className="mb-6">
         <h3 className="mb-1 text-2xl font-bold transition-transform group-hover:translate-x-1">
-          {user.fname + " " + user.lname}
+          {user.fname + " " + user.lname || "-"}
         </h3>
         <p className="font-label text-xs text-zinc-500">{user.uname}</p>
       </div>
 
       <p className="text-on-surface-variant mb-8 line-clamp-3 text-sm">
-        {user.bio}
+        {user.bio || "No bio available."}
       </p>
 
       <div className="mt-auto space-y-4 border-t border-white/5 pt-6">
         <div className="font-label flex justify-between text-[11px]">
           <span className="text-zinc-600">ORIGIN</span>
-          <span className="text-white">{user.birth_location}</span>
+          <span className="text-white">{user.birth_location || "-"}</span>
         </div>
+
+        
         <div className="flex gap-2 pt-4">
-          <a
-            href="#"
-            className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
-          >
-            <span className="material-symbols-outlined text-sm">
-              {user.url_social?.[0] || ""}
-            </span>
-          </a>
-          <a
-            href="#"
-            className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
-          >
-            <span className="material-symbols-outlined text-sm">
-              {user.url_social?.[1] || ""}
-            </span>
-          </a>
+          {user.url_social && user.url_social.length > 0 && (
+          <>
+            <a
+              href="#"
+              className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
+            >
+              <span className="material-symbols-outlined text-sm">
+                {user.url_social?.[0]}
+              </span>
+            </a>
+            <a
+              href="#"
+              className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
+            >
+              <span className="material-symbols-outlined text-sm">
+                {user.url_social?.[1]}
+              </span>
+            </a>
+          </>
+          )}
         </div>
       </div>
     </div>
