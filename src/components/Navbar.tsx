@@ -47,6 +47,8 @@ export default function Navbar() {
               </button>
             </div>
           )}
+
+          {session && (
           <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-900">
             {session?.user?.image || (session?.user as Record<string, unknown>)?.img_url ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -61,6 +63,7 @@ export default function Navbar() {
               </span>
             )}
           </div>
+          )}
         </div>
       </div>
     </nav>
