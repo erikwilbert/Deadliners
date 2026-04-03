@@ -10,17 +10,12 @@ export default function Navbar() {
       <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center bg-white">
-              <span className="material-symbols-outlined text-sm text-black">
-                terminal
-              </span>
-            </div>
             <span className="font-headline text-xl font-bold tracking-tighter text-white uppercase">
               Deadliners
             </span>
           </div>
           <span className="font-label rounded-full border border-accent/30 bg-accent/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-accent">
-            BETA
+            TK2
           </span>
         </div>
 

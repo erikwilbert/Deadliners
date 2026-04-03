@@ -18,7 +18,7 @@ export default function Home() {
       <Navbar />
 
       <main className="relative mx-auto max-w-screen-xl px-6 pt-32 pb-24">
-        <section className="relative mb-32 flex flex-col items-center text-center">
+        <section className="relative mb-12 flex flex-col items-center text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 backdrop-blur-md">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
             <span className="font-label text-[10px] tracking-[0.2em] text-white/80">
@@ -27,26 +27,10 @@ export default function Home() {
           </div>
 
           <h1 className="mb-8 text-6xl leading-tight font-black tracking-tighter md:text-8xl">
-            Welcome to <br />
             <span className="bg-gradient-to-r from-white via-accent to-neon-cyan bg-clip-text text-transparent">
-              Deadliners.
+              Deadliners
             </span>
           </h1>
-
-          <p className="text-on-surface-variant mb-12 max-w-2xl text-lg leading-relaxed font-light">
-            A technical collective environment secured by OAuth 2.0. Bridging
-            the architectural gap with high-fidelity system execution.
-          </p>
-
-          <div className="glass-card group flex w-full max-w-xl items-center gap-3 rounded-none border-white/10 p-4 text-left">
-            <span className="font-label text-accent">system@deadliners:~$</span>
-            <div className="flex items-center">
-              <span className="text-white">
-                authenticate --provider google
-              </span>
-              <span className="ml-1 h-4 w-2 animate-pulse bg-neon-cyan" />
-            </div>
-          </div>
         </section>
 
         <section
