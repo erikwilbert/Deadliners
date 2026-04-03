@@ -1,6 +1,10 @@
 "use client";
 
+import { signIn, signOut, useSession } from "next-auth/react";
+
 export default function Navbar() {
+  const { data: session } = useSession();
+
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-white/5 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-6 py-4">
@@ -21,14 +25,41 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-6">
-          <button className="hidden items-center gap-2 rounded-full bg-accent px-6 py-2 text-sm font-bold text-white shadow-lg shadow-accent/20 transition-all duration-300 hover:bg-accent/90 active:scale-95 md:flex">
-            <span className="material-symbols-outlined text-sm">login</span>
-            Sign in with Google
-          </button>
+          {!session ? (
+            <button
+              onClick={() => signIn("google")}
+              className="hidden items-center gap-2 rounded-full bg-accent px-6 py-2 text-sm font-bold text-white shadow-lg shadow-accent/20 transition-all duration-300 hover:bg-accent/90 active:scale-95 md:flex"
+            >
+              <span className="material-symbols-outlined text-sm">login</span>
+              Sign in with Google
+            </button>
+          ) : (
+            <div className="flex items-center gap-4">
+              <span className="font-label text-sm font-bold text-white/80">
+                {((session?.user as Record<string, unknown>)?.fname as string) || session?.user?.name}
+              </span>
+              <button
+                onClick={() => signOut()}
+                className="hidden items-center gap-2 rounded-full bg-red-500/10 px-4 py-2 text-sm font-bold text-red-500 shadow-lg transition-all duration-300 hover:bg-red-500/20 active:scale-95 md:flex"
+              >
+                <span className="material-symbols-outlined text-sm">logout</span>
+                Sign out
+              </button>
+            </div>
+          )}
           <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-900">
-            <span className="material-symbols-outlined text-white/40">
-              account_circle
-            </span>
+            {session?.user?.image || (session?.user as Record<string, unknown>)?.img_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={session?.user?.image || ((session?.user as Record<string, unknown>)?.img_url as string)}
+                alt="Profile"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <span className="material-symbols-outlined text-white/40">
+                account_circle
+              </span>
+            )}
           </div>
         </div>
       </div>
