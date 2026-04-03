@@ -29,6 +29,16 @@ export default function useUsers() {
     await fetchUsers();
   };
 
+  // DELETE
+  const deleteUser = async (id: string) => {
+    try {
+      await deleteUser(id);
+      await fetchUsers();
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
+  };
+
   useEffect(() => {
     fetchUsers().catch(() => undefined);
   }, []);
@@ -38,5 +48,7 @@ export default function useUsers() {
     loading,
     fetchUsers,
     editUser,
+    fetchUserById,
+    deleteUser
   };
 }
