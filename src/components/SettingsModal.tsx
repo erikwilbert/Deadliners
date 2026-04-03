@@ -5,6 +5,26 @@ import { useTheme } from "./ThemeProvider";
 
 const APPEARANCES = ["STITCH", "GEIST", "LINEAR", "AZURE", "EMERALD", "CRIMSON"] as const;
 const FONTS = ["Arial", "Comic Sans", "Calibri", "Times New Roman", "Poppins", "Helvetica", "Montserrat", "Consolas"] as const;
+type AppearanceName = (typeof APPEARANCES)[number];
+
+const appearanceButtonClasses: Record<AppearanceName, string> = {
+  STITCH:
+    "border-accent/40 bg-accent/85 text-white shadow-[0_16px_40px_-28px_rgba(99,102,241,0.95)]",
+  GEIST:
+    "border-white/20 bg-white/8 text-white backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_16px_40px_-30px_rgba(255,255,255,0.6)]",
+  LINEAR:
+    "border-rose-400/40 bg-rose-500/80 text-white shadow-[0_16px_40px_-28px_rgba(244,63,94,0.95)]",
+  AZURE:
+    "border-sky-400/40 bg-sky-500/80 text-white shadow-[0_16px_40px_-28px_rgba(59,130,246,0.95)]",
+  EMERALD:
+    "border-emerald-400/40 bg-emerald-500/80 text-white shadow-[0_16px_40px_-28px_rgba(16,185,129,0.95)]",
+  CRIMSON:
+    "border-red-400/40 bg-red-500/80 text-white shadow-[0_16px_40px_-28px_rgba(239,68,68,0.95)]",
+};
+
+function getSelectedControlClasses(theme: AppearanceName) {
+  return appearanceButtonClasses[theme];
+}
 
 export default function SettingsModal({
   open,
@@ -15,12 +35,12 @@ export default function SettingsModal({
 }) {
   const { appearance, typography, refreshSettings } = useTheme();
   
-  const [activeTheme, setActiveTheme] = useState(appearance);
+  const [activeTheme, setActiveTheme] = useState<AppearanceName>(appearance as AppearanceName);
   const [activeFont, setActiveFont] = useState(typography);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setActiveTheme(appearance);
+    setActiveTheme((appearance as AppearanceName) || "STITCH");
   }, [appearance]);
 
   useEffect(() => {
@@ -87,10 +107,10 @@ export default function SettingsModal({
                 <button
                   key={themeName}
                   onClick={() => setActiveTheme(themeName)}
-                  className={`font-label rounded-none px-3 py-2 text-[10px] font-bold transition-colors ${
+                  className={`font-label rounded-none border px-3 py-2 text-[10px] font-bold transition-all duration-200 ${
                     activeTheme === themeName
-                      ? "bg-accent text-white"
-                      : "text-zinc-500 hover:text-white hover:bg-white/5 border border-white/5"
+                      ? getSelectedControlClasses(themeName)
+                      : "border-white/5 bg-white/[0.02] text-zinc-500 hover:border-white/10 hover:bg-white/5 hover:text-white"
                   }`}
                 >
                   {themeName}
@@ -108,10 +128,10 @@ export default function SettingsModal({
                 <button
                   key={fontName}
                   onClick={() => setActiveFont(fontName)}
-                  className={`font-label rounded-none px-3 py-2 text-[8px] font-bold transition-colors ${
+                  className={`font-label rounded-none border px-3 py-2 text-[8px] font-bold transition-all duration-200 ${
                     activeFont === fontName
-                      ? "bg-accent text-white"
-                      : "text-zinc-500 hover:text-white hover:bg-white/5 border border-white/5"
+                      ? getSelectedControlClasses(activeTheme)
+                      : "border-white/5 bg-white/[0.02] text-zinc-500 hover:border-white/10 hover:bg-white/5 hover:text-white"
                   }`}
                 >
                   {fontName.toUpperCase()}
@@ -124,7 +144,7 @@ export default function SettingsModal({
         <button
           onClick={handleSave}
           disabled={loading}
-          className="mt-2 w-full bg-accent py-3 text-[10px] font-bold tracking-widest text-white uppercase transition-all hover:bg-accent/90 active:scale-95 disabled:opacity-50"
+          className={`mt-2 w-full border py-3 text-[10px] font-bold tracking-widest text-white uppercase transition-all active:scale-95 disabled:opacity-50 ${getSelectedControlClasses(activeTheme)}`}
         >
           {loading ? "Saving..." : "Save Configuration"}
         </button>
