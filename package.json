@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "google-auth-library": "^10.6.2",
+    "jsonwebtoken": "^9.0.3",
     "next": "^16.2.2",
     "next-auth": "^4.24.13",
     "pg": "^8.20.0",
