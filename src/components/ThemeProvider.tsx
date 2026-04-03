@@ -71,8 +71,8 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     const colors = THEME_MAP[appearance] || THEME_MAP.STITCH;
-    document.documentElement.style.setProperty("--color-accent", colors.accent);
-    document.documentElement.style.setProperty("--color-neon", colors.neon);
+    document.documentElement.style.setProperty("--color-global-accent", colors.accent);
+    document.documentElement.style.setProperty("--color-global-neon", colors.neon);
 
     const fontString = FONT_MAP[typography] || FONT_MAP.Arial;
     document.documentElement.style.setProperty("--font-global", fontString);

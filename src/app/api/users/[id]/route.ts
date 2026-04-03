@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 import pool from "@/lib/neon";
 import type { UserAccent } from "@/types/user";
 
-const allowedAccents: UserAccent[] = ["indigo", "cyan", "emerald"];
+const allowedAccents: UserAccent[] = ["indigo", "cyan", "emerald", "crimson", "gold", "white"];
 type RouteContext = {
   params: Promise<{ id: string }>;
 };
@@ -73,7 +73,7 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
 
   if (!allowedAccents.includes(accent as UserAccent)) {
     return NextResponse.json(
-      { message: "Accent must be indigo, cyan, or emerald." },
+      { message: "Accent must be indigo, cyan, emerald, crimson, gold, or white." },
       { status: 400 },
     );
   }

@@ -9,24 +9,7 @@ import {
   parseSocialLinks,
 } from "@/lib/social";
 import type { User } from "@/types/user";
-
-const accentMap = {
-  indigo: {
-    text: "text-accent",
-    border: "border-accent/40",
-    bg: "bg-accent/10",
-  },
-  cyan: {
-    text: "text-neon-cyan",
-    border: "border-neon-cyan/40",
-    bg: "bg-neon-cyan/10",
-  },
-  emerald: {
-    text: "text-neon-emerald",
-    border: "border-neon-emerald/40",
-    bg: "bg-neon-emerald/10",
-  },
-} as const;
+import { getAccentRgb } from "@/types/user";
 
 export default function ViewProfileModal({
   user,
@@ -38,21 +21,19 @@ export default function ViewProfileModal({
   onClose: () => void;
 }) {
   if (!open) return null;
-
-  const accentKey = user.accent?.toLowerCase().trim() as keyof typeof accentMap;
-  const a = accentMap[accentKey] ?? accentMap.indigo;
   const socialLinks = parseSocialLinks(user.url_social);
 
   return (
     <div
       className="fixed inset-0 z-[90] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      style={{ "--color-user-accent": getAccentRgb(user.accent) } as React.CSSProperties}
       onClick={onClose}
     >
       <div
         className="glass-card flex max-h-[95vh] w-full max-w-4xl flex-col overflow-hidden rounded-none border-white/10 bg-zinc-950/95 relative"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className={`scanline bg-gradient-to-r from-transparent via-${accentKey === 'cyan' ? 'neon-cyan' : accentKey === 'emerald' ? 'neon-emerald' : 'accent'} to-transparent opacity-100`} />
+        <div className="scanline bg-gradient-to-r from-transparent via-user-accent to-transparent opacity-100" />
 
         <div className="border-b border-white/10 px-6 py-5">
           <div className="flex items-start justify-between gap-4">
@@ -63,7 +44,7 @@ export default function ViewProfileModal({
               <h2 className="mt-2 text-2xl font-black tracking-tight text-white flex items-center gap-3">
                 {user.fname} {user.lname}
                 {user.prodi && (
-                  <span className={`font-label text-[10px] uppercase border px-2 py-1 ${a.border} ${a.text} ${a.bg}`}>
+                  <span className="font-label text-[10px] uppercase border px-2 py-1 border-user-accent/40 text-user-accent bg-user-accent/10">
                     {user.prodi}
                   </span>
                 )}
@@ -83,7 +64,7 @@ export default function ViewProfileModal({
         <div className="flex min-h-0 flex-col overflow-y-auto">
           <div className="grid gap-6 px-6 py-6 lg:grid-cols-[240px_minmax(0,1fr)]">
             <aside className="space-y-4">
-              <div className={`overflow-hidden border border-white/10 bg-zinc-900 ${a.border}`}>
+              <div className="overflow-hidden border border-white/10 bg-zinc-900 border-user-accent/40">
                 {user.img_url ? (
                   <Image
                     src={user.img_url}
@@ -201,7 +182,7 @@ export default function ViewProfileModal({
                           title={platform.label}
                           className="flex items-center gap-2 border border-white/10 bg-black/30 px-4 py-3 text-sm text-white transition-colors hover:border-white/30"
                         >
-                          <SocialPlatformIcon platform={link.platform} className={a.text} />
+                          <SocialPlatformIcon platform={link.platform} className="text-user-accent" />
                           <span className="hidden sm:inline-block truncate max-w-[150px]">
                             {link.url}
                           </span>

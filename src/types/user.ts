@@ -1,4 +1,15 @@
-export type UserAccent = 'indigo' | 'cyan' | 'emerald';
+export type UserAccent = 'indigo' | 'cyan' | 'emerald' | 'crimson' | 'gold' | 'white';
+
+export const getAccentRgb = (accent?: string) => {
+  switch (accent?.toLowerCase().trim()) {
+    case 'cyan': return '6 182 212';
+    case 'emerald': return '16 185 129';
+    case 'crimson': return '239 68 68';
+    case 'gold': return '234 179 8';
+    case 'white': return '255 255 255';
+    default: return '99 102 241';
+  }
+};
 export type SocialPlatform = "instagram" | "github" | "linkedin" | "x";
 export type SocialLink = {
   platform: SocialPlatform;
