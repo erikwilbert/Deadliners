@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTheme } from "./ThemeProvider";
 
-const themes = ["STITCH", "GEIST", "LINEAR", "AZURE"] as const;
+const APPEARANCES = ["STITCH", "GEIST", "LINEAR", "AZURE", "EMERALD", "CRIMSON"] as const;
+const FONTS = ["Arial", "Comic Sans", "Calibri", "Times New Roman", "Poppins", "Helvetica", "Montserrat", "Consolas"] as const;
 
 export default function SettingsModal({
   open,
@@ -11,7 +13,47 @@ export default function SettingsModal({
   open: boolean;
   onClose: () => void;
 }) {
-  const [activeTheme, setActiveTheme] = useState("STITCH");
+  const { appearance, typography, refreshSettings } = useTheme();
+  
+  const [activeTheme, setActiveTheme] = useState(appearance);
+  const [activeFont, setActiveFont] = useState(typography);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setActiveTheme(appearance);
+  }, [appearance]);
+
+  useEffect(() => {
+    setActiveFont(typography);
+  }, [typography]);
+
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      if (activeTheme !== appearance) {
+        await fetch("/api/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ key: "appearance", value: activeTheme }),
+        });
+      }
+      
+      if (activeFont !== typography) {
+         await fetch("/api/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ key: "typography", value: activeFont }),
+        });
+      }
+
+      await refreshSettings();
+      onClose();
+    } catch (e) {
+      console.error("Failed to save settings", e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!open) return null;
 
@@ -38,20 +80,20 @@ export default function SettingsModal({
         <div className="space-y-4">
           <div className="space-y-2">
             <span className="font-label text-[9px] text-zinc-600">
-              APPEARANCE
+              APPEARANCE MAPPING
             </span>
             <div className="grid grid-cols-2 gap-2">
-              {themes.map((theme) => (
+              {APPEARANCES.map((themeName) => (
                 <button
-                  key={theme}
-                  onClick={() => setActiveTheme(theme)}
+                  key={themeName}
+                  onClick={() => setActiveTheme(themeName)}
                   className={`font-label rounded-none px-3 py-2 text-[10px] font-bold transition-colors ${
-                    activeTheme === theme
+                    activeTheme === themeName
                       ? "bg-accent text-white"
                       : "text-zinc-500 hover:text-white hover:bg-white/5 border border-white/5"
                   }`}
                 >
-                  {theme}
+                  {themeName}
                 </button>
               ))}
             </div>
@@ -59,22 +101,32 @@ export default function SettingsModal({
 
           <div className="space-y-2">
             <span className="font-label text-[9px] text-zinc-600">
-              TYPOGRAPHY
+              TYPOGRAPHY MAPPING
             </span>
-            <button className="font-label flex w-full items-center justify-between border border-white/10 px-3 py-3 text-[10px] text-white transition-colors hover:border-accent/40 hover:bg-accent/10">
-              SANS_SERIF
-              <span className="material-symbols-outlined text-xs text-accent">
-                toggle_on
-              </span>
-            </button>
+            <div className="grid grid-cols-2 gap-2">
+              {FONTS.map((fontName) => (
+                <button
+                  key={fontName}
+                  onClick={() => setActiveFont(fontName)}
+                  className={`font-label rounded-none px-3 py-2 text-[8px] font-bold transition-colors ${
+                    activeFont === fontName
+                      ? "bg-accent text-white"
+                      : "text-zinc-500 hover:text-white hover:bg-white/5 border border-white/5"
+                  }`}
+                >
+                  {fontName.toUpperCase()}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         <button
-          onClick={onClose}
-          className="mt-2 w-full bg-accent py-3 text-[10px] font-bold tracking-widest text-white uppercase transition-all hover:bg-accent/90 active:scale-95"
+          onClick={handleSave}
+          disabled={loading}
+          className="mt-2 w-full bg-accent py-3 text-[10px] font-bold tracking-widest text-white uppercase transition-all hover:bg-accent/90 active:scale-95 disabled:opacity-50"
         >
-          Save Configuration
+          {loading ? "Saving..." : "Save Configuration"}
         </button>
       </div>
     </div>

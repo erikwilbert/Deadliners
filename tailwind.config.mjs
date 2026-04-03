@@ -8,8 +8,8 @@ const config = {
   theme: {
     extend: {
       colors: {
-        accent: "#6366f1",
-        "neon-cyan": "#06b6d4",
+        accent: "rgb(var(--color-accent) / <alpha-value>)",
+        "neon-cyan": "rgb(var(--color-neon) / <alpha-value>)",
         "neon-emerald": "#10b981",
         surface: "#000000",
         "surface-container": "#0a0a0b",
@@ -18,9 +18,9 @@ const config = {
         "on-surface-variant": "#a1a1aa",
       },
       fontFamily: {
-        headline: ["var(--font-inter)", "sans-serif"],
-        body: ["var(--font-inter)", "sans-serif"],
-        label: ["var(--font-space-mono)", "monospace"],
+        headline: ["var(--font-global, Arial)", "sans-serif"],
+        body: ["var(--font-global, Arial)", "sans-serif"],
+        label: ["var(--font-global, Arial)", "monospace"],
       },
       borderRadius: {
         DEFAULT: "0.5rem",
