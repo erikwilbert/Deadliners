@@ -2,6 +2,11 @@
 
 import Image from "next/image";
 
+import {
+  getSocialPlatformMeta,
+  normalizeSocialHref,
+  parseSocialLinks,
+} from "@/lib/social";
 import type { User } from "@/types/user";
 
 const accentMap = {
@@ -37,7 +42,8 @@ const accentMap = {
 
 export default function UserCard({ user }: { user: User }) {
   const accentKey = user.accent?.toLowerCase().trim() as keyof typeof accentMap;
-  const a = accentMap[accentKey];
+  const a = accentMap[accentKey] ?? accentMap.indigo;
+  const socialLinks = parseSocialLinks(user.url_social);
 
   return (
     <div className={`glass-card group flex h-full flex-col p-8 ${a.cardHover}`}>
@@ -95,28 +101,26 @@ export default function UserCard({ user }: { user: User }) {
           <span className="text-white">{user.birth_location || "-"}</span>
         </div>
 
-        
         <div className="flex gap-2 pt-4">
-          {user.url_social && user.url_social.length > 0 && (
-          <>
-            <a
-              href="#"
-              className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
-            >
-              <span className="material-symbols-outlined text-sm">
-                {user.url_social?.[0]}
-              </span>
-            </a>
-            <a
-              href="#"
-              className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
-            >
-              <span className="material-symbols-outlined text-sm">
-                {user.url_social?.[1]}
-              </span>
-            </a>
-          </>
-          )}
+          {socialLinks.slice(0, 4).map((link) => {
+            const platform = getSocialPlatformMeta(link.platform);
+
+            return (
+              <a
+                key={`${link.platform}-${link.url}`}
+                href={normalizeSocialHref(link.url)}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={platform.label}
+                title={platform.label}
+                className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
+              >
+                <span className="material-symbols-outlined text-sm">
+                  {platform.icon}
+                </span>
+              </a>
+            );
+          })}
         </div>
       </div>
     </div>

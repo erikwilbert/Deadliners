@@ -52,6 +52,13 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
     typeof body.status_relationship === "string" ? body.status_relationship.trim() : "";
   const prodi = typeof body.prodi === "string" ? body.prodi.trim() : "";
   const accent = typeof body.accent === "string" ? body.accent : "";
+  const urlSocial = Array.isArray(body.url_social)
+    ? body.url_social
+        .filter((value): value is string => typeof value === "string")
+        .map((value) => value.trim())
+        .filter(Boolean)
+        .slice(0, 4)
+    : [];
 
   if (!uname || !fname || !lname || !prodi || !accent) {
     return NextResponse.json(
@@ -74,8 +81,8 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
     const result = await pool.query(
       `UPDATE "user"
        SET uname=$1, fname=$2, lname=$3, bio=$4, phone=$5,
-           address=$6, birth_location=$7, birth_date=$8, gender=$9, status_relationship=$10, prodi=$11, accent=$12
-       WHERE id=$13
+           address=$6, birth_location=$7, birth_date=$8, gender=$9, status_relationship=$10, prodi=$11, accent=$12, url_social=$13
+       WHERE id=$14
        RETURNING *`,
       [
         uname,
@@ -90,6 +97,7 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
         statusRelationship,
         prodi,
         accent,
+        urlSocial,
         id,
       ]
     );
@@ -106,8 +114,8 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
 
 // DELETE user
 export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  { params }: RouteContext
 ) {
   const session = await getServerSession(authOptions);
 
@@ -124,7 +132,7 @@ export async function DELETE(
     );
 
     return NextResponse.json({ message: "User deleted" });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }
