@@ -12,55 +12,24 @@ import {
   parseSocialLinks,
 } from "@/lib/social";
 import type { User } from "@/types/user";
-
-const accentMap = {
-  indigo: {
-    cardHover:
-      "hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_10px_40px_-10px_rgba(99,102,241,0.2)]",
-    imgHover: "group-hover:border-accent/60",
-    npmHover: "group-hover:text-accent",
-    deptColor: "text-accent",
-    iconHover: "hover:border-accent hover:text-accent",
-    scanline: "bg-gradient-to-r from-transparent via-accent to-transparent",
-  },
-  cyan: {
-    cardHover:
-      "hover:-translate-y-1 hover:border-neon-cyan/40 hover:shadow-[0_10px_40px_-10px_rgba(6,182,212,0.2)]",
-    imgHover: "group-hover:border-neon-cyan/60",
-    npmHover: "group-hover:text-neon-cyan",
-    deptColor: "text-neon-cyan",
-    iconHover: "hover:border-neon-cyan hover:text-neon-cyan",
-    scanline: "bg-gradient-to-r from-transparent via-neon-cyan to-transparent",
-  },
-  emerald: {
-    cardHover:
-      "hover:-translate-y-1 hover:border-neon-emerald/40 hover:shadow-[0_10px_40px_-10px_rgba(16,185,129,0.2)]",
-    imgHover: "group-hover:border-neon-emerald/60",
-    npmHover: "group-hover:text-neon-emerald",
-    deptColor: "text-neon-emerald",
-    iconHover: "hover:border-neon-emerald hover:text-neon-emerald",
-    scanline:
-      "bg-gradient-to-r from-transparent via-neon-emerald to-transparent",
-  },
-} as const;
+import { getAccentRgb } from "@/types/user";
 
 export default function UserCard({ user }: { user: User }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const accentKey = user.accent?.toLowerCase().trim() as keyof typeof accentMap;
-  const a = accentMap[accentKey] ?? accentMap.indigo;
   const socialLinks = parseSocialLinks(user.url_social);
 
   return (
     <>
     <div
-      className={`glass-card group flex h-full flex-col p-8 cursor-pointer ${a.cardHover}`}
+      className="glass-card group flex h-full flex-col p-8 cursor-pointer hover:-translate-y-1 hover:border-user-accent/40 hover:shadow-[0_10px_40px_-10px_rgb(var(--color-user-accent)/0.2)]"
+      style={{ "--color-user-accent": getAccentRgb(user.accent) } as React.CSSProperties}
       onClick={() => setIsModalOpen(true)}
     >
-      <div className={`scanline ${a.scanline}`} />
+      <div className="scanline bg-gradient-to-r from-transparent via-user-accent to-transparent" />
 
       <div className="mb-8 flex items-start justify-between">
         <div
-          className={`h-20 w-20 overflow-hidden border border-white/10 bg-zinc-900 grayscale transition-all group-hover:grayscale-0 ${a.imgHover}`}
+          className="h-20 w-20 overflow-hidden border border-white/10 bg-zinc-900 grayscale transition-all group-hover:grayscale-0 group-hover:border-user-accent/60"
         >
           <Image
             src={user.img_url}
@@ -75,7 +44,7 @@ export default function UserCard({ user }: { user: User }) {
           <div className="flex flex-col items-end">
             <span className="font-label text-[9px] text-zinc-500">NPM_ID</span>
             <span
-              className={`font-label text-sm text-white transition-colors ${a.npmHover}`}
+              className="font-label text-sm text-white transition-colors group-hover:text-user-accent"
             >
               {user.npm || "-"}
             </span>
@@ -85,7 +54,7 @@ export default function UserCard({ user }: { user: User }) {
               DEPARTMENT
             </span>
             <span
-              className={`font-label text-[10px] font-bold uppercase ${a.deptColor}`}
+              className="font-label text-[10px] font-bold uppercase text-user-accent"
             >
               {user.prodi || "-"}
             </span>
@@ -123,7 +92,7 @@ export default function UserCard({ user }: { user: User }) {
                 aria-label={platform.label}
                 title={platform.label}
                 onClick={(e) => e.stopPropagation()}
-                className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
+                className="flex h-8 w-8 items-center justify-center border border-white/10 transition-colors hover:border-user-accent hover:text-user-accent"
               >
                 <SocialPlatformIcon platform={link.platform} className="h-3.5 w-3.5" />
               </a>
