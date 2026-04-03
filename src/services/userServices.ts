@@ -24,7 +24,16 @@ export const updateUser = async (id: string, data: UserUpdate) => {
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Failed to update user");
+  if (!res.ok) {
+    const payload = (await res.json().catch(() => null)) as
+      | { message?: string; error?: string }
+      | null;
+
+    throw new Error(
+      payload?.message || payload?.error || "Failed to update user",
+    );
+  }
+
   return res.json();
 };
 

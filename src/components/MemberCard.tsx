@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 
-import type { Member } from "@/data/members";
-import { User } from "@/types/user";
+import type { User } from "@/types/user";
 
 const accentMap = {
   indigo: {
@@ -37,7 +36,7 @@ const accentMap = {
 } as const;
 
 export default function UserCard({ user }: { user: User }) {
-  const a = accentMap[user.accent as keyof typeof accentMap] || accentMap.indigo;
+  const a = accentMap[user.accent] || accentMap.indigo;
 
   return (
     <div className={`glass-card group flex h-full flex-col p-8 ${a.cardHover}`}>

@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+
 import pool from "./neon";
 
 // Auth Configuration
@@ -23,12 +24,14 @@ export const authOptions: NextAuthOptions = {
         const uname = email.split("@")[0] || "";
 
         try {
-          const res = await pool.query('SELECT * FROM "user" WHERE gmail = $1', [email]);
-          
+          const res = await pool.query('SELECT * FROM "user" WHERE gmail = $1', [
+            email,
+          ]);
+
           if (res.rows.length === 0) {
             await pool.query(
               `INSERT INTO "user" (
-                gmail, fname, lname, uname, img_ur
+                gmail, fname, lname, uname, img_url
               ) VALUES (
                 $1, $2, $3, $4, $5
               )`,
@@ -46,8 +49,23 @@ export const authOptions: NextAuthOptions = {
     // NextAuth JWT Callback
     async jwt({ token, user }) {
       if (user) {
-        token.email = user.email;
+        token.email = user.email ?? undefined;
       }
+
+      if (token.email) {
+        try {
+          const res = await pool.query('SELECT id FROM "user" WHERE gmail = $1', [
+            token.email,
+          ]);
+
+          if (res.rows.length > 0) {
+            token.id = res.rows[0].id;
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
       return token;
     },
     // NextAuth Session Callback
@@ -58,6 +76,12 @@ export const authOptions: NextAuthOptions = {
           if (res.rows.length > 0) {
             const dbUser = res.rows[0];
             Object.assign(session.user, dbUser);
+            session.user.id = dbUser.id;
+            session.user.email = dbUser.gmail;
+            session.user.name =
+              [dbUser.fname, dbUser.lname].filter(Boolean).join(" ") ||
+              dbUser.uname;
+            session.user.image = dbUser.img_url || session.user.image;
           }
         } catch (error) {
           console.error(error);
