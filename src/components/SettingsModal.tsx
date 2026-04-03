@@ -89,7 +89,7 @@ export default function SettingsModal({
                   onClick={() => setActiveTheme(themeName)}
                   className={`font-label rounded-none px-3 py-2 text-[10px] font-bold transition-colors ${
                     activeTheme === themeName
-                      ? "bg-accent text-white"
+                      ? "bg-global-accent text-white"
                       : "text-zinc-500 hover:text-white hover:bg-white/5 border border-white/5"
                   }`}
                 >
@@ -110,7 +110,7 @@ export default function SettingsModal({
                   onClick={() => setActiveFont(fontName)}
                   className={`font-label rounded-none px-3 py-2 text-[8px] font-bold transition-colors ${
                     activeFont === fontName
-                      ? "bg-accent text-white"
+                      ? "bg-global-accent text-white"
                       : "text-zinc-500 hover:text-white hover:bg-white/5 border border-white/5"
                   }`}
                 >
@@ -124,7 +124,7 @@ export default function SettingsModal({
         <button
           onClick={handleSave}
           disabled={loading}
-          className="mt-2 w-full bg-accent py-3 text-[10px] font-bold tracking-widest text-white uppercase transition-all hover:bg-accent/90 active:scale-95 disabled:opacity-50"
+          className="mt-2 w-full bg-global-accent py-3 text-[10px] font-bold tracking-widest text-white uppercase transition-all hover:bg-global-accent/90 active:scale-95 disabled:opacity-50"
         >
           {loading ? "Saving..." : "Save Configuration"}
         </button>

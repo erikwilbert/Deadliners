@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 
 import type { User } from "@/types/user";
+import { getAccentRgb } from "@/types/user";
 import SettingsModal from "./SettingsModal";
 import LogoutConfirmModal from "./LogoutConfirmModal";
 import DeleteAccountConfirmModal from "./DeleteAccountConfirmModal";
@@ -57,7 +58,7 @@ export default function Navbar({
                 Deadliners
               </span>
             </div>
-            <span className="font-label rounded-full border border-accent/30 bg-accent/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-accent">
+            <span className="font-label rounded-full border border-global-accent/30 bg-global-accent/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-global-accent">
               TK2
             </span>
           </div>
@@ -66,7 +67,7 @@ export default function Navbar({
             {!session ? (
               <button
                 onClick={() => signIn("google")}
-                className="hidden items-center gap-2 rounded-full bg-accent px-6 py-2 text-sm font-bold text-white shadow-lg shadow-accent/20 transition-all duration-300 hover:bg-accent/90 active:scale-95 md:flex"
+                className="hidden items-center gap-2 rounded-full bg-global-accent px-6 py-2 text-sm font-bold text-white shadow-lg shadow-global-accent/20 transition-all duration-300 hover:bg-global-accent/90 active:scale-95 md:flex"
               >
                 <span className="material-symbols-outlined text-sm">login</span>
                 Sign in with Google
@@ -76,7 +77,8 @@ export default function Navbar({
                 <button
                   type="button"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="group flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-900 transition-all hover:border-accent/40 active:scale-95"
+                  style={{ "--color-user-accent": currentUser?.accent ? getAccentRgb(currentUser.accent) : getAccentRgb() } as React.CSSProperties}
+                  className="group flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-900 transition-all hover:border-user-accent/40 active:scale-95"
                 >
                   {avatarSrc ? (
                     // eslint-disable-next-line @next/next/no-img-element

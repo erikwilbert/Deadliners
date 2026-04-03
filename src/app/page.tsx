@@ -54,7 +54,7 @@ export default function Home() {
           </div>
 
           <h1 className="mb-8 text-6xl leading-tight font-black tracking-tighter md:text-8xl">
-            <span className="bg-gradient-to-r from-white via-accent to-neon-cyan bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-white via-global-accent to-global-neon bg-clip-text text-transparent">
               Deadliners
             </span>
           </h1>

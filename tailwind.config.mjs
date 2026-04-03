@@ -8,8 +8,11 @@ const config = {
   theme: {
     extend: {
       colors: {
-        accent: "rgb(var(--color-accent) / <alpha-value>)",
-        "neon-cyan": "rgb(var(--color-neon) / <alpha-value>)",
+        "global-accent": "rgb(var(--color-global-accent) / <alpha-value>)",
+        "global-neon": "rgb(var(--color-global-neon) / <alpha-value>)",
+        "user-accent": "rgb(var(--color-user-accent) / <alpha-value>)",
+        accent: "#6366f1",
+        "neon-cyan": "#06b6d4",
         "neon-emerald": "#10b981",
         surface: "#000000",
         "surface-container": "#0a0a0b",

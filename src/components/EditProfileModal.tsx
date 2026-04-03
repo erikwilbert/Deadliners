@@ -8,12 +8,16 @@ import {
   socialPlatformOptions,
 } from "@/lib/social";
 import type { SocialLink, User, UserAccent, UserUpdate } from "@/types/user";
+import { getAccentRgb } from "@/types/user";
 import useUsers from "@/hooks/useUsers";
 
 const accentOptions: { value: UserAccent; label: string }[] = [
   { value: "indigo", label: "Indigo" },
   { value: "cyan", label: "Cyan" },
   { value: "emerald", label: "Emerald" },
+  { value: "crimson", label: "Crimson" },
+  { value: "gold", label: "Gold" },
+  { value: "white", label: "White" },
 ];
 
 function toEditableProfile(user: User): UserUpdate {
@@ -320,7 +324,7 @@ function EditProfileDialog({
             <input
               value={form.uname}
               onChange={updateField("uname")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-accent/50"
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-user-accent/50"
               placeholder="@your_handle"
             />
           </label>
@@ -332,7 +336,7 @@ function EditProfileDialog({
             <input
               value={form.prodi}
               onChange={updateField("prodi")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-accent/50"
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-user-accent/50"
               placeholder="Computer Science"
             />
           </label>
@@ -344,7 +348,7 @@ function EditProfileDialog({
             <input
               value={form.fname}
               onChange={updateField("fname")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-accent/50"
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-user-accent/50"
             />
           </label>
 
@@ -355,7 +359,7 @@ function EditProfileDialog({
             <input
               value={form.lname}
               onChange={updateField("lname")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-accent/50"
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-user-accent/50"
             />
           </label>
 
@@ -366,7 +370,7 @@ function EditProfileDialog({
             <input
               value={form.birth_location}
               onChange={updateField("birth_location")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-accent/50"
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-user-accent/50"
               placeholder="Jakarta, ID"
             />
           </label>
@@ -379,7 +383,7 @@ function EditProfileDialog({
               type="date"
               value={form.birth_date}
               onChange={updateField("birth_date")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors focus:border-accent/50 [&::-webkit-calendar-picker-indicator]:invert"
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors focus:border-user-accent/50 [&::-webkit-calendar-picker-indicator]:invert"
             />
           </label>
 
@@ -391,7 +395,7 @@ function EditProfileDialog({
               type="text"
               value={form.npm}
               onChange={updateField("npm")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors focus:border-accent/50"
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors focus:border-user-accent/50"
             />
           </label>
 
@@ -403,7 +407,7 @@ function EditProfileDialog({
               <select
                 value={form.gender}
                 onChange={updateField("gender")}
-                className="w-full appearance-none border border-white/10 bg-black/30 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-accent/50"
+                className="w-full appearance-none border border-white/10 bg-black/30 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-user-accent/50"
               >
                 <option value="" disabled className="text-zinc-500">Select Gender</option>
                 <option value="Male" className="bg-zinc-900 text-white">Male</option>
@@ -423,7 +427,7 @@ function EditProfileDialog({
               <select
                 value={form.accent}
                 onChange={updateField("accent")}
-                className="w-full appearance-none border border-white/10 bg-black/30 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-accent/50"
+                className="w-full appearance-none border border-white/10 bg-black/30 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-user-accent/50"
               >
                 {accentOptions.map((option) => (
                   <option key={option.value} value={option.value} className="bg-zinc-900 text-white">
@@ -480,7 +484,7 @@ function EditProfileDialog({
             <input
               value={form.phone}
               onChange={updateField("phone")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-accent/50"
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-user-accent/50"
               placeholder="+62..."
             />
           </label>
@@ -492,7 +496,7 @@ function EditProfileDialog({
             <input
               value={form.address}
               onChange={updateField("address")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-accent/50"
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-user-accent/50"
               placeholder="Street, city, province"
             />
           </label>
@@ -505,7 +509,7 @@ function EditProfileDialog({
               <select
                 value={form.status_relationship}
                 onChange={updateField("status_relationship")}
-                className="w-full appearance-none border border-white/10 bg-black/30 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-accent/50"
+                className="w-full appearance-none border border-white/10 bg-black/30 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-user-accent/50"
               >
                 <option value="" disabled className="text-zinc-500">Select Status</option>
                 <option value="Single" className="bg-zinc-900 text-white">Single</option>
@@ -528,7 +532,7 @@ function EditProfileDialog({
             value={form.bio}
             onChange={updateField("bio")}
             rows={7}
-            className="w-full resize-none border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-accent/50"
+            className="w-full resize-none border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-user-accent/50"
             placeholder="Write a short public profile summary..."
           />
         </label>
@@ -582,7 +586,7 @@ function EditProfileDialog({
             type="button"
             onClick={addSocialLink}
             disabled={socialLinks.length >= 4}
-            className="flex items-center gap-2 border border-white/10 px-4 py-2 text-sm font-bold text-white transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex items-center gap-2 border border-white/10 px-4 py-2 text-sm font-bold text-white transition-colors hover:border-user-accent/40 hover:text-user-accent disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-base">add</span>
             Add Social
@@ -603,7 +607,7 @@ function EditProfileDialog({
                   <select
                     value={link.platform}
                     onChange={updateSocialLink(index, "platform")}
-                    className="w-full appearance-none border border-white/10 bg-black/40 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-accent/50"
+                    className="w-full appearance-none border border-white/10 bg-black/40 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-user-accent/50"
                   >
                     {socialPlatformOptions.map((option) => (
                       <option
@@ -628,7 +632,7 @@ function EditProfileDialog({
                 <input
                   value={link.url}
                   onChange={updateSocialLink(index, "url")}
-                  className="w-full border border-white/10 bg-black/40 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-accent/50"
+                  className="w-full border border-white/10 bg-black/40 px-4 py-3 text-white outline-none transition-colors placeholder:text-zinc-600 focus:border-user-accent/50"
                   placeholder="https://instagram.com/username"
                 />
               </label>
@@ -654,13 +658,14 @@ function EditProfileDialog({
   return (
     <div
       className="fixed inset-0 z-[90] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      style={{ "--color-user-accent": getAccentRgb(form.accent) } as React.CSSProperties}
       onClick={saving ? undefined : onClose}
     >
       <div
         className="glass-card flex max-h-[95vh] w-full max-w-4xl flex-col overflow-hidden rounded-none border-white/10 bg-zinc-950/95 relative"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="scanline bg-gradient-to-r from-transparent via-accent to-transparent opacity-100" />
+        <div className="scanline bg-gradient-to-r from-transparent via-user-accent to-transparent opacity-100" />
 
         <div className="border-b border-white/10 px-6 py-5">
           <div className="flex items-start justify-between gap-4">
@@ -680,7 +685,7 @@ function EditProfileDialog({
                 <div
                   className={`font-label flex items-center gap-2 border px-3 py-2 text-[10px] tracking-[0.2em] uppercase ${
                     step === 1
-                      ? "border-accent/40 bg-accent/10 text-accent"
+                      ? "border-user-accent/40 bg-user-accent/10 text-user-accent"
                       : "border-white/10 text-zinc-500"
                   }`}
                 >
@@ -693,7 +698,7 @@ function EditProfileDialog({
                 <div
                   className={`font-label flex items-center gap-2 border px-3 py-2 text-[10px] tracking-[0.2em] uppercase ${
                     step === 2
-                      ? "border-accent/40 bg-accent/10 text-accent"
+                      ? "border-user-accent/40 bg-user-accent/10 text-user-accent"
                       : "border-white/10 text-zinc-500"
                   }`}
                 >
@@ -706,7 +711,7 @@ function EditProfileDialog({
                 <div
                   className={`font-label flex items-center gap-2 border px-3 py-2 text-[10px] tracking-[0.2em] uppercase ${
                     step === 3
-                      ? "border-accent/40 bg-accent/10 text-accent"
+                      ? "border-user-accent/40 bg-user-accent/10 text-user-accent"
                       : "border-white/10 text-zinc-500"
                   }`}
                 >
@@ -721,7 +726,7 @@ function EditProfileDialog({
               type="button"
               onClick={onClose}
               disabled={saving}
-              className="flex h-10 w-10 items-center justify-center border border-white/10 text-zinc-400 transition-colors hover:border-accent/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex h-10 w-10 items-center justify-center border border-white/10 text-zinc-400 transition-colors hover:border-user-accent/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
             >
               <span className="material-symbols-outlined text-lg">close</span>
             </button>
@@ -797,7 +802,7 @@ function EditProfileDialog({
                     setValidationError(null);
                     setStep(3);
                   }}
-                  className="flex min-w-32 items-center justify-center gap-2 bg-accent px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-accent/90"
+                  className="flex min-w-32 items-center justify-center gap-2 bg-user-accent px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-user-accent/90"
                 >
                   Next
                   <span className="material-symbols-outlined text-base">
@@ -808,7 +813,7 @@ function EditProfileDialog({
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex items-center justify-center gap-2 bg-accent px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex items-center justify-center gap-2 bg-user-accent px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-user-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {saving ? (
                     <>
