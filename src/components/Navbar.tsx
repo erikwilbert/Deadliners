@@ -6,6 +6,7 @@ import { signIn, useSession } from "next-auth/react";
 import type { User } from "@/types/user";
 import SettingsModal from "./SettingsModal";
 import LogoutConfirmModal from "./LogoutConfirmModal";
+import DeleteAccountConfirmModal from "./DeleteAccountConfirmModal";
 
 export default function Navbar({
   currentUser,
@@ -20,6 +21,7 @@ export default function Navbar({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const displayName =
@@ -130,6 +132,17 @@ export default function Navbar({
                           type="button"
                           onClick={() => {
                             setIsDropdownOpen(false);
+                            setIsDeleteOpen(true);
+                          }}
+                          className="flex w-full items-center gap-2 px-4 py-2 text-left text-xs font-bold text-red-500 transition-colors hover:bg-red-500/10"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">delete</span>
+                          Delete Account
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsDropdownOpen(false);
                             setIsLogoutOpen(true);
                           }}
                           className="flex w-full items-center gap-2 px-4 py-2 text-left text-xs font-bold text-red-500 transition-colors hover:bg-red-500/10"
@@ -161,6 +174,7 @@ export default function Navbar({
 
       <SettingsModal open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       <LogoutConfirmModal open={isLogoutOpen} onClose={() => setIsLogoutOpen(false)} />
+      {currentUser?.id && <DeleteAccountConfirmModal open={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} userId={currentUser.id} />}
     </>
   );
 }
