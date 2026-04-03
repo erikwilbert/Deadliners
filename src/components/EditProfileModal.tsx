@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import type { User, UserAccent, UserUpdate } from "@/types/user";
+import useUsers from "@/hooks/useUsers";
 
 const accentOptions: { value: UserAccent; label: string }[] = [
   { value: "indigo", label: "Indigo" },
@@ -30,21 +31,34 @@ function toEditableProfile(user: User): UserUpdate {
 export default function EditProfileModal({
   open,
   user,
-  saving,
-  error,
   onClose,
-  onSubmit,
 }: {
   open: boolean;
   user: User | null;
-  saving: boolean;
-  error: string | null;
   onClose: () => void;
-  onSubmit: (data: UserUpdate) => Promise<void>;
 }) {
+  const { editUser } = useUsers();
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   if (!open || !user) {
     return null;
   }
+
+  const handleSubmit = async (data: UserUpdate) => {
+    setSaving(true);
+    setError(null);
+    try {
+      await editUser(user.id, data);
+      onClose();
+      window.location.reload();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to update profile.",
+      );
+      setSaving(false);
+    }
+  };
 
   return (
     <EditProfileDialog
@@ -53,7 +67,7 @@ export default function EditProfileModal({
       saving={saving}
       error={error}
       onClose={onClose}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
     />
   );
 }
@@ -118,6 +132,11 @@ function EditProfileDialog({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (step === 1) {
+      handleNextStep();
+      return;
+    }
 
     const nextForm: UserUpdate = {
       uname: form.uname.trim(),
@@ -448,7 +467,7 @@ function EditProfileDialog({
               {step === 1 ? (
                 <button
                   type="button"
-                  onClick={handleNextStep}
+                  onClick={(e) => { e.preventDefault(); handleNextStep(); }}
                   className="flex min-w-32 items-center justify-center gap-2 bg-accent px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-accent/90"
                 >
                   Next
