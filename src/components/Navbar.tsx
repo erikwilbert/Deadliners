@@ -35,9 +35,6 @@ export default function Navbar() {
             </button>
           ) : (
             <div className="flex items-center gap-4">
-              <span className="font-label text-sm font-bold text-white/80">
-                {((session?.user as Record<string, unknown>)?.fname as string) || session?.user?.name}
-              </span>
               <button
                 onClick={() => signOut()}
                 className="hidden items-center gap-2 rounded-full bg-red-500/10 px-4 py-2 text-sm font-bold text-red-500 shadow-lg transition-all duration-300 hover:bg-red-500/20 active:scale-95 md:flex"
