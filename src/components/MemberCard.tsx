@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
+import ViewProfileModal from "./ViewProfileModal";
 
 import {
   getSocialPlatformMeta,
@@ -41,12 +43,17 @@ const accentMap = {
 } as const;
 
 export default function UserCard({ user }: { user: User }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const accentKey = user.accent?.toLowerCase().trim() as keyof typeof accentMap;
   const a = accentMap[accentKey] ?? accentMap.indigo;
   const socialLinks = parseSocialLinks(user.url_social);
 
   return (
-    <div className={`glass-card group flex h-full flex-col p-8 ${a.cardHover}`}>
+    <>
+    <div
+      className={`glass-card group flex h-full flex-col p-8 cursor-pointer ${a.cardHover}`}
+      onClick={() => setIsModalOpen(true)}
+    >
       <div className={`scanline ${a.scanline}`} />
 
       <div className="mb-8 flex items-start justify-between">
@@ -113,6 +120,7 @@ export default function UserCard({ user }: { user: User }) {
                 rel="noreferrer"
                 aria-label={platform.label}
                 title={platform.label}
+                onClick={(e) => e.stopPropagation()}
                 className={`flex h-8 w-8 items-center justify-center border border-white/10 transition-colors ${a.iconHover}`}
               >
                 <span className="material-symbols-outlined text-sm">
@@ -124,5 +132,8 @@ export default function UserCard({ user }: { user: User }) {
         </div>
       </div>
     </div>
+    
+    <ViewProfileModal user={user} open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   );
 }

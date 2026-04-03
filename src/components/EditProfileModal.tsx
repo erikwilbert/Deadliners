@@ -48,33 +48,13 @@ export default function EditProfileModal({
   user: User | null;
   onClose: () => void;
 }) {
-  const { editUser, deleteUser } = useUsers();
+  const { editUser } = useUsers();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   if (!open || !user) {
     return null;
   }
-
-  const handleDelete = () => {
-    setShowDeleteConfirm(true);
-  };
-
-  const confirmDelete = async () => {
-    setSaving(true);
-    setError(null);
-    try {
-      await deleteUser(user.id);
-      await signOut({ callbackUrl: "/" });
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to delete account.",
-      );
-      setSaving(false);
-      setShowDeleteConfirm(false);
-    }
-  };
 
   const handleSubmit = async (data: UserUpdate) => {
     setSaving(true);
@@ -92,56 +72,14 @@ export default function EditProfileModal({
   };
 
   return (
-    <>
-      <EditProfileDialog
-        key={user.id}
-        user={user}
-        saving={saving}
-        error={error}
-        onClose={onClose}
-        onSubmit={handleSubmit}
-        onDelete={handleDelete}
-      />
-
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-md">
-          <div className="glass-card w-full max-w-sm rounded-none border border-white/10 bg-zinc-950 p-6 shadow-2xl">
-            <div className="flex items-center gap-3 text-red-500">
-              <span className="material-symbols-outlined text-3xl">warning</span>
-              <h3 className="text-xl font-bold">Delete Account</h3>
-            </div>
-            <p className="mt-4 text-sm leading-6 text-zinc-300">
-              Are you absolutely sure? All of your profile data will be permanently removed from Deadliners. This action <strong>cannot</strong> be undone.
-            </p>
-            <div className="mt-8 flex items-center justify-end gap-3">
-              <button
-                type="button"
-                onClick={() => setShowDeleteConfirm(false)}
-                disabled={saving}
-                className="border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition-colors hover:border-white/20 hover:text-white disabled:opacity-50"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={confirmDelete}
-                disabled={saving}
-                className="flex items-center gap-2 bg-red-500 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-red-600 disabled:opacity-60"
-              >
-                {saving ? (
-                  <>
-                    <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
-                    Deleting...
-                  </>
-                ) : (
-                  <>Delete Account</>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+    <EditProfileDialog
+      key={user.id}
+      user={user}
+      saving={saving}
+      error={error}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+    />
   );
 }
 
@@ -151,14 +89,12 @@ function EditProfileDialog({
   error,
   onClose,
   onSubmit,
-  onDelete,
 }: {
   user: User;
   saving: boolean;
   error: string | null;
   onClose: () => void;
   onSubmit: (data: UserUpdate) => Promise<void>;
-  onDelete: () => void;
 }) {
   const [form, setForm] = useState<UserUpdate>(() => toEditableProfile(user));
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -812,15 +748,6 @@ function EditProfileDialog({
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
-                <button
-                  type="button"
-                  onClick={onDelete}
-                  disabled={saving}
-                  className="flex items-center gap-2 text-sm font-bold text-red-500/80 transition-colors hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <span className="material-symbols-outlined text-base">delete</span>
-                  Delete Account
-                </button>
                 <p className="hidden text-xs text-zinc-500 xl:block">
                   Required fields: username, first name, last name.
                 </p>
