@@ -1,0 +1,37 @@
+"use client";
+
+export default function Navbar() {
+  return (
+    <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-white/5 backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-6 py-4">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center bg-white">
+              <span className="material-symbols-outlined text-sm text-black">
+                terminal
+              </span>
+            </div>
+            <span className="font-headline text-xl font-bold tracking-tighter text-white uppercase">
+              Deadliners
+            </span>
+          </div>
+          <span className="font-label rounded-full border border-accent/30 bg-accent/5 px-2 py-0.5 text-[10px] font-bold tracking-widest text-accent">
+            BETA
+          </span>
+        </div>
+
+        <div className="flex items-center gap-6">
+          <button className="hidden items-center gap-2 rounded-full bg-accent px-6 py-2 text-sm font-bold text-white shadow-lg shadow-accent/20 transition-all duration-300 hover:bg-accent/90 active:scale-95 md:flex">
+            <span className="material-symbols-outlined text-sm">login</span>
+            Sign in with Google
+          </button>
+          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-900">
+            <span className="material-symbols-outlined text-white/40">
+              account_circle
+            </span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
