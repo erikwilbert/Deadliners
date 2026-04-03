@@ -21,6 +21,9 @@ function toEditableProfile(user: User): UserUpdate {
     phone: user.phone ?? "",
     address: user.address ?? "",
     birth_location: user.birth_location ?? "",
+    birth_date: user.birth_date ?? "",
+    gender: user.gender ?? "",
+    status_relationship: user.status_relationship ?? "",
     prodi: user.prodi ?? "",
     accent: accentOptions.some((option) => option.value === user.accent)
       ? user.accent
@@ -146,6 +149,9 @@ function EditProfileDialog({
       phone: form.phone.trim(),
       address: form.address.trim(),
       birth_location: form.birth_location.trim(),
+      birth_date: form.birth_date,
+      gender: form.gender,
+      status_relationship: form.status_relationship,
       prodi: form.prodi.trim(),
       accent: form.accent,
     };
@@ -269,21 +275,58 @@ function EditProfileDialog({
             />
           </label>
 
+          <label className="space-y-2">
+            <span className="font-label text-[10px] tracking-[0.2em] text-zinc-500 uppercase">
+              Birth Date
+            </span>
+            <input
+              type="date"
+              value={form.birth_date}
+              onChange={updateField("birth_date")}
+              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors focus:border-accent/50 [&::-webkit-calendar-picker-indicator]:invert"
+            />
+          </label>
+
+          <label className="space-y-2">
+            <span className="font-label text-[10px] tracking-[0.2em] text-zinc-500 uppercase">
+              Gender
+            </span>
+            <div className="relative">
+              <select
+                value={form.gender}
+                onChange={updateField("gender")}
+                className="w-full appearance-none border border-white/10 bg-black/30 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-accent/50"
+              >
+                <option value="" disabled className="text-zinc-500">Select Gender</option>
+                <option value="Male" className="bg-zinc-900 text-white">Male</option>
+                <option value="Female" className="bg-zinc-900 text-white">Female</option>
+              </select>
+              <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
+                expand_more
+              </span>
+            </div>
+          </label>
+
           <label className="space-y-2 md:max-w-xs">
             <span className="font-label text-[10px] tracking-[0.2em] text-zinc-500 uppercase">
               Accent
             </span>
-            <select
-              value={form.accent}
-              onChange={updateField("accent")}
-              className="w-full border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition-colors focus:border-accent/50"
-            >
-              {accentOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                value={form.accent}
+                onChange={updateField("accent")}
+                className="w-full appearance-none border border-white/10 bg-black/30 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-accent/50"
+              >
+                {accentOptions.map((option) => (
+                  <option key={option.value} value={option.value} className="bg-zinc-900 text-white">
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
+                expand_more
+              </span>
+            </div>
           </label>
         </div>
       </div>
@@ -345,6 +388,28 @@ function EditProfileDialog({
               placeholder="Street, city, province"
             />
           </label>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="font-label text-[10px] tracking-[0.2em] text-zinc-500 uppercase">
+              Relationship Status
+            </span>
+            <div className="relative">
+              <select
+                value={form.status_relationship}
+                onChange={updateField("status_relationship")}
+                className="w-full appearance-none border border-white/10 bg-black/30 px-4 py-3 pr-10 text-white outline-none transition-colors focus:border-accent/50"
+              >
+                <option value="" disabled className="text-zinc-500">Select Status</option>
+                <option value="Single" className="bg-zinc-900 text-white">Single</option>
+                <option value="Dating" className="bg-zinc-900 text-white">In a relationship</option>
+                <option value="Married" className="bg-zinc-900 text-white">Married</option>
+                <option value="Complicated" className="bg-zinc-900 text-white">It's complicated</option>
+              </select>
+              <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
+                expand_more
+              </span>
+            </div>
+          </label>
         </div>
 
         <label className="block space-y-2">
@@ -369,7 +434,7 @@ function EditProfileDialog({
       onClick={saving ? undefined : onClose}
     >
       <div
-        className="glass-card relative w-full max-w-4xl overflow-hidden rounded-none border-white/10 bg-zinc-950/95"
+        className="glass-card flex max-h-[95vh] w-full max-w-4xl flex-col overflow-hidden rounded-none border-white/10 bg-zinc-950/95 relative"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="scanline bg-gradient-to-r from-transparent via-accent to-transparent opacity-100" />
@@ -427,10 +492,12 @@ function EditProfileDialog({
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="overflow-hidden">
-          {step === 1 ? renderStepOne() : renderStepTwo()}
+        <form onSubmit={handleSubmit} className="flex min-h-0 flex-col overflow-hidden">
+          <div className="overflow-y-auto">
+            {step === 1 ? renderStepOne() : renderStepTwo()}
+          </div>
 
-          <div className="border-t border-white/10 px-6 py-4">
+          <div className="shrink-0 border-t border-white/10 px-6 py-4">
             {formError ? (
               <div className="mb-4 border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
                 {formError}
