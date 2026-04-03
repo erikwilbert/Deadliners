@@ -34,4 +34,5 @@ export type UserUpdate = {
   status_relationship: string;
   prodi: string;
   accent: UserAccent;
+  npm: string;
 };

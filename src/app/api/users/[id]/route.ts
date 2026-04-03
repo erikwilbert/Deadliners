@@ -52,12 +52,13 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
     typeof body.status_relationship === "string" ? body.status_relationship.trim() : "";
   const prodi = typeof body.prodi === "string" ? body.prodi.trim() : "";
   const accent = typeof body.accent === "string" ? body.accent : "";
+  const npm = typeof body.npm === "string" ? body.npm.trim() : "";
 
-  if (!uname || !fname || !lname || !prodi || !accent) {
+  if (!uname || !fname || !lname) {
     return NextResponse.json(
       {
         message:
-          "Username, first name, last name, department, and accent are required.",
+          "Username, first name, and last name are required.",
       },
       { status: 400 },
     );
@@ -74,8 +75,8 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
     const result = await pool.query(
       `UPDATE "user"
        SET uname=$1, fname=$2, lname=$3, bio=$4, phone=$5,
-           address=$6, birth_location=$7, birth_date=$8, gender=$9, status_relationship=$10, prodi=$11, accent=$12
-       WHERE id=$13
+           address=$6, birth_location=$7, birth_date=$8, gender=$9, status_relationship=$10, prodi=$11, accent=$12, npm=$13
+       WHERE id=$14
        RETURNING *`,
       [
         uname,
@@ -85,11 +86,12 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
         phone,
         address,
         birthLocation,
-        birthDate,
+        birthDate || null,
         gender,
         statusRelationship,
         prodi,
         accent,
+        npm,
         id,
       ]
     );
@@ -99,8 +101,9 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
     }
 
     return NextResponse.json(result.rows[0]);
-  } catch {
-    return NextResponse.json({ message: "Update failed" }, { status: 500 });
+  } catch (err) {
+    console.error("PUT Error:", err);
+    return NextResponse.json({ message: "Update failed", error: String(err) }, { status: 500 });
   }
 }
 
