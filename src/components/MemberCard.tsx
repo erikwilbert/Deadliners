@@ -81,7 +81,7 @@ export default function UserCard({ user }: { user: User }) {
 
       <div className="mb-6">
         <h3 className="mb-1 text-2xl font-bold transition-transform group-hover:translate-x-1">
-          {user.fname + " " + user.lname || "-"}
+          {user.fname} {user.lname ? user.lname.charAt(0).toUpperCase() + "." : ""}
         </h3>
         <p className="font-label text-xs text-zinc-500">{user.uname}</p>
       </div>
