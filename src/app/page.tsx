@@ -1,9 +1,13 @@
+"use client"
+
 import MemberCard from "@/components/MemberCard";
 import Navbar from "@/components/Navbar";
 import ThemeCustomizer from "@/components/ThemeCustomizer";
-import { members } from "@/data/members";
+import useUsers from "@/hooks/useUsers";
 
 export default function Home() {
+  const { users, loading } = useUsers();
+
   return (
     <>
       <div className="pointer-events-none fixed inset-0 z-[-1] overflow-hidden">
@@ -49,8 +53,8 @@ export default function Home() {
           id="members"
           className="relative grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
-          {members.map((member) => (
-            <MemberCard key={member.id} member={member} />
+          {users.map((user) => (
+            <MemberCard key={user.id} user={user} />
           ))}
         </section>
       </main>

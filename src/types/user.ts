@@ -1,5 +1,6 @@
 export type User = {
   id: string;
+  npm: string;
   uname: string;
   gmail: string;
   fname: string;
@@ -15,6 +16,7 @@ export type User = {
   url_social?: string[];
   url_other?: string[];
   prodi: string;
+  accent: string;
 };
 
 export type UserUpdate = {
@@ -28,4 +30,5 @@ export type UserUpdate = {
   url_social?: string[];
   url_other?: string[];
   prodi?: string;
+  accent?: string;
 };
