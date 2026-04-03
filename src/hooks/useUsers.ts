@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { getUsers, updateUser, getUserById } from "@/services/userServices";
+import { getUsers, updateUser, getUserById, deleteUser as deleteUserService } from "@/services/userServices";
 import type { User, UserUpdate } from "@/types/user";
 
 export default function useUsers() {
@@ -44,10 +44,11 @@ export default function useUsers() {
   // DELETE
   const deleteUser = async (id: string) => {
     try {
-      await deleteUser(id);
+      await deleteUserService(id);
       await fetchUsers();
     } catch (err) {
       console.error("Delete error:", err);
+      throw err;
     }
   };
 

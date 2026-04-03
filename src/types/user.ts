@@ -40,4 +40,5 @@ export type UserUpdate = {
   prodi: string;
   accent: UserAccent;
   url_social: string[];
+  npm: string;
 };
